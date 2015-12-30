@@ -15,12 +15,15 @@ public class MainWindow extends JFrame{
     JLabel ShuHao = new JLabel("书号：");
     JTextField bookNum = new JTextField("");
     JButton Start = new JButton("开始");
-    JLabel DisplayNum = new JLabel("233333");
+    JLabel DisplayNum = new JLabel("0");
     Font NumFont = new Font("Arial Black",Font.BOLD,80);
-    JTextField Record = new JTextField();
+    JTextArea Record = new JTextArea();
     JLabel Status = new JLabel("请输入书号并点击开始");
     JLabel ShuaXin = new JLabel("请输入刷新时间(分钟)");
     JTextField UpdateInterval = new JTextField("");
+    JScrollPane Scroll = new JScrollPane(Record);
+
+    public String BookName;
     public int HitNum;
 
     public MainWindow(){
@@ -40,9 +43,14 @@ public class MainWindow extends JFrame{
         add(Start);
         Start.setSize(60,25);
         Start.setLocation(160,20);
+
         add(ShuaXin);
         ShuaXin.setSize(150,25);
-        ShuaXin.setLocation(330,180);
+        ShuaXin.setLocation(330,200);
+        add(UpdateInterval);
+        UpdateInterval.setSize(50,25);
+        UpdateInterval.setLocation(480,200);
+
         add(DisplayNum);
         DisplayNum.setSize(500,100);
         DisplayNum.setLocation(50,40);
@@ -53,9 +61,15 @@ public class MainWindow extends JFrame{
         Record.setLocation(40,140);
         Record.setEnabled(false);
 
+        add(Scroll);
+        Scroll.setSize(20,110);
+        Scroll.setLocation(290,140);
+
         add(Status);
         Status.setSize(250,25);
         Status.setLocation(300,20);
+
+
 
         Start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -68,6 +82,8 @@ public class MainWindow extends JFrame{
                 Status.setText("正在抓取信息，请稍后...");
                 GetHit getHit = new GetHit();
                 HitNum = getHit.GetHitNum(bookNum.getText());
+                BookName = getHit.getBookName();
+                System.out.print(BookName);
                 if(HitNum == -1){
                     Status.setText("信息获取失败，请检查网络连接");
                 }else{if(HitNum == -2){
@@ -79,6 +95,7 @@ public class MainWindow extends JFrame{
                     HitUpdate update = new HitUpdate();
                     String UpdateInfo = update.Update(HitNum);
                     //System.out.println(UpdateInfo);
+                    Record.setText(UpdateInfo+"\n"+Record.getText());
                 }}
         }catch (Exception ex){
             ex.printStackTrace();

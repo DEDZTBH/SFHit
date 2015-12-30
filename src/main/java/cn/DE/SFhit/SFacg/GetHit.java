@@ -81,4 +81,8 @@ public class GetHit {
         int Slash = Reversed.indexOf("/");
         return Integer.parseInt(Content.substring(EndTag - Slash + 1, EndTag - 1));
     }
+
+    public String getBookName(){
+        return BookName;
+    }
 }
