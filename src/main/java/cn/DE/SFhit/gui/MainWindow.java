@@ -2,8 +2,7 @@ package cn.DE.SFhit.gui;
 
 import javax.swing.*;
 import cn.DE.SFhit.SFacg.*;
-import cn.DE.SFhit.util.HitUpdate;
-
+import cn.DE.SFhit.util.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +21,8 @@ public class MainWindow extends JFrame{
     JLabel ShuaXin = new JLabel("请输入刷新时间(分钟)");
     JTextField UpdateInterval = new JTextField("");
     JScrollPane Scroll = new JScrollPane(Record);
+    JLabel ShuMing = new JLabel("书名：");
+    JLabel BookNameLabel = new JLabel("");
 
     public String BookName;
     public int HitNum;
@@ -51,6 +52,13 @@ public class MainWindow extends JFrame{
         UpdateInterval.setSize(50,25);
         UpdateInterval.setLocation(480,200);
 
+        add(ShuMing);
+        ShuMing.setSize(50,25);
+        ShuMing.setLocation(330,150);
+        add(BookNameLabel);
+        BookNameLabel.setSize(150,25);
+        BookNameLabel.setLocation(370,150);
+
         add(DisplayNum);
         DisplayNum.setSize(500,100);
         DisplayNum.setLocation(50,40);
@@ -64,10 +72,11 @@ public class MainWindow extends JFrame{
         add(Scroll);
         Scroll.setSize(20,110);
         Scroll.setLocation(290,140);
-
         add(Status);
         Status.setSize(250,25);
         Status.setLocation(300,20);
+
+
 
 
 
@@ -83,19 +92,23 @@ public class MainWindow extends JFrame{
                 GetHit getHit = new GetHit();
                 HitNum = getHit.GetHitNum(bookNum.getText());
                 BookName = getHit.getBookName();
-                System.out.print(BookName);
+                //System.out.print(BookName);
                 if(HitNum == -1){
                     Status.setText("信息获取失败，请检查网络连接");
                 }else{if(HitNum == -2){
                     Status.setText("信息获取失败，请检查书号是否输入正确");
                 }
                 else{
+                    FileManager fm = new FileManager();
+                    int BookNum = Integer.parseInt(bookNum.getText());
                     Status.setText("更新成功 = w =");
                     DisplayNum.setText(HitNum+"");
-                    HitUpdate update = new HitUpdate();
-                    String UpdateInfo = update.Update(HitNum);
-                    //System.out.println(UpdateInfo);
-                    Record.setText(UpdateInfo+"\n"+Record.getText());
+                    BookNameLabel.setText(BookName);
+                    HitUpdate hitUpdate = new HitUpdate();
+                    String UpdateInfo = hitUpdate.Update(HitNum,BookNum);
+                    fm.WriteFile(BookNum,HitNum,UpdateInfo);
+                    fm.ReadFile(BookNum);
+                    Record.setText(fm.getRecord());
                 }}
         }catch (Exception ex){
             ex.printStackTrace();

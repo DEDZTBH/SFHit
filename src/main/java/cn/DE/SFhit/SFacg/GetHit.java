@@ -16,7 +16,7 @@ public class GetHit {
         public boolean UnknownHosts = false;
         public int ret;
     public int GetHitNum(String bookNum) throws IOException {
-        urlStr = "http://m.sfacg.com/b/"+bookNum+"/";
+        urlStr = "http://m.sfacg.com/b/"+bookNum;
         //System.out.println(urlStr);
         URL url = new URL(urlStr);
         try{
@@ -35,7 +35,7 @@ public class GetHit {
         String line = "";
         StringBuilder contentBuild = new StringBuilder();
         while ((line = bufRead.readLine())!=null){
-            contentBuild.append(line + "\n");
+            contentBuild.append(line);
         }
         String content = contentBuild.toString();
         //System.out.println(content);
