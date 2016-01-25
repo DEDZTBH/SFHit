@@ -22,10 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="SFHit" />
         <module name="SFhit" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="SFHit" target="1.5" />
       <module name="SFhit" target="1.5" />
     </bytecodeTargetLevel>
   </component>

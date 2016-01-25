@@ -34,6 +34,7 @@ public class FileManager {
         }
         String Info = build.toString();
         int div = Info.indexOf(",");
+        if (div < 0){return;}
         Hit = Integer.parseInt(Info.substring(0,div));
         Record = Info.substring(div+1);
     }
@@ -51,7 +52,7 @@ public class FileManager {
         recordFile.delete();
         initFile();
 
-        BufferedWriter BW = new BufferedWriter(new FileWriter(recordFile));
+        FileWriter BW = new FileWriter(recordFile);
         BW.write(Hit+","+Info+"\n"+OrgRecord);
         BW.flush();
         BW.close();
