@@ -56,7 +56,7 @@ public class MainWindow extends JFrame{
         ShuMing.setSize(50,25);
         ShuMing.setLocation(330,150);
         add(BookNameLabel);
-        BookNameLabel.setSize(150,25);
+        BookNameLabel.setSize(200,25);
         BookNameLabel.setLocation(370,150);
 
         add(DisplayNum);

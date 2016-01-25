@@ -15,8 +15,9 @@ public class FileManager {
             FileName = BookNum + ".txt";
             recordFile = new File(FileName);
             try{
-                if (recordFile.exists()==false)
-                {initFile();}else{
+                if (recordFile.exists()==false) {
+                    initFile();
+                }else{
                 ReadBookRecorded();
                 }
 
@@ -53,7 +54,9 @@ public class FileManager {
         initFile();
 
         FileWriter BW = new FileWriter(recordFile);
+        if (Info!=null){
         BW.write(Hit+","+Info+"\n"+OrgRecord);
+        }
         BW.flush();
         BW.close();
     }
