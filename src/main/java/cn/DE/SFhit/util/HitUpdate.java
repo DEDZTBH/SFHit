@@ -13,6 +13,7 @@ public class HitUpdate {
     public String Update(int NewHit, int BookNum) {
         fm.ReadFile(BookNum);
         int OriginalHit = fm.getHit();
+        System.out.println("org hit = " + OriginalHit);
         String UpdateInfo;
         increase = NewHit - OriginalHit;
         if (increase != 0) {
