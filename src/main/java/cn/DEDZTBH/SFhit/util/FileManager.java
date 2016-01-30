@@ -1,4 +1,4 @@
-package cn.DE.SFhit.util;
+package cn.DEDZTBH.SFhit.util;
 import java.io.*;
 
 /**
@@ -73,7 +73,7 @@ public class FileManager {
         try {
             recordFile.createNewFile();
             recordFile.mkdirs();
-            System.out.println("file init");
+            System.out.println("record file init");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package cn.DE.SFhit.SFacg;
+package cn.DEDZTBH.SFhit.SFacg;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +15,9 @@ public class GetHit {
         public HttpURLConnection Conn;
         public boolean UnknownHosts = false;
         public int ret;
+        public int booked;
+        public int like;
+
     public int GetHitNum(String bookNum) throws IOException {
         urlStr = "http://m.sfacg.com/b/"+bookNum;
         //System.out.println(urlStr);

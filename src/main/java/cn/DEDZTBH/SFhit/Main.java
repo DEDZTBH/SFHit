@@ -1,5 +1,5 @@
-package cn.DE.SFhit;
-import cn.DE.SFhit.gui.*;
+package cn.DEDZTBH.SFhit;
+import cn.DEDZTBH.SFhit.gui.MainWindow;
 
 /**
  * Created by peiqi on 2015/12/28.
