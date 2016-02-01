@@ -1,5 +1,6 @@
 package cn.DEDZTBH.SFhit.util;
 import java.io.*;
+import java.util.Timer;
 
 /**
  * Created by peiqi on 2015/12/29.
@@ -10,6 +11,7 @@ public class FileManager {
     public String Record = "";
     public String FileName;
     public int Hit;
+
 
     public void ReadFile(int BookNum){
             FileName = BookNum + ".txt";

@@ -1,6 +1,8 @@
 package cn.DEDZTBH.SFhit.gui;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import cn.DEDZTBH.SFhit.SFacg.GetHit;
 import cn.DEDZTBH.SFhit.util.FileManager;
@@ -10,6 +12,8 @@ import cn.DEDZTBH.SFhit.util.PrefManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
+import java.util.Timer;
 
 /**
  * Created by peiqi on 2015/12/28.
@@ -22,7 +26,7 @@ public class MainWindow extends JFrame {
     Font numFont = new Font("Arial Black", Font.BOLD, 80);
     JTextArea recordText = new JTextArea();
     JLabel status = new JLabel("请输入书号并点击开始");
-    JLabel shuaXin = new JLabel("请输入刷新时间(分钟)");
+    JLabel shuaXin = new JLabel("刷新时间(分钟)");
     JTextField updateInterval = new JTextField("");
     JScrollPane scroll = new JScrollPane(recordText);
     JLabel shuMing = new JLabel("书名：");
@@ -30,9 +34,12 @@ public class MainWindow extends JFrame {
 
     public String BookName;
     public int HitNum;
+    public float updateIntervalFloat;
 
     PrefManager pm = new PrefManager();
     FileManager fm = new FileManager();
+
+    java.util.Timer timer = new Timer();
 
     public MainWindow() {
         setBounds(100, 100, 600, 300);
@@ -83,10 +90,33 @@ public class MainWindow extends JFrame {
         status.setSize(250, 25);
         status.setLocation(300, 20);
 
-
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 updateNum();
+            }
+        });
+
+        updateInterval.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                changeInterval();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                changeInterval();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                changeInterval();
+            }
+            public void changeInterval(){
+                try{
+                    if (updateInterval.getText()!=""||updateInterval.getText()!=null)
+                    updateIntervalFloat = Float.parseFloat(updateInterval.getText());
+                    shuaXin.setText("刷新时间(分钟)");
+                } catch (NumberFormatException e){
+                    e.printStackTrace();
+                    shuaXin.setText("请输入正确的数字!");
+                }
             }
         });
 
@@ -99,6 +129,11 @@ public class MainWindow extends JFrame {
             recordText.setText(String.valueOf(fm.getRecord()));
             updateNum();
         }
+
+
+        timer.schedule(
+                new java.util.TimerTask() { public void run()
+                { updateNum(); } }, 0, (int)updateIntervalFloat*60*1000);
 
     }
 
