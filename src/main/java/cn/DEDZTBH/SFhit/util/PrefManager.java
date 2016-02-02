@@ -30,7 +30,7 @@ public class PrefManager {
         try {
             BufferedReader fr = new BufferedReader(new FileReader(f));
             prefRecord = fr.readLine();
-            System.out.println("read pref:"+prefRecord);
+//            System.out.println("read pref:"+prefRecord);
             fr.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -44,7 +44,7 @@ public class PrefManager {
         try {
             f.createNewFile();
             f.mkdirs();
-            System.out.println("pref file init");
+//            System.out.println("pref file init");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,6 @@
 package cn.DEDZTBH.SFhit.gui;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import cn.DEDZTBH.SFhit.SFacg.GetHit;
 import cn.DEDZTBH.SFhit.util.FileManager;
@@ -12,7 +10,6 @@ import cn.DEDZTBH.SFhit.util.PrefManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
 import java.util.Timer;
 
 /**
@@ -24,27 +21,34 @@ public class MainWindow extends JFrame {
     JButton startButton = new JButton("开始");
     JLabel displayNum = new JLabel("0");
     Font numFont = new Font("Arial Black", Font.BOLD, 80);
+    Font midSize = new Font("Arial", Font.LAYOUT_NO_LIMIT_CONTEXT, 32);
     JTextArea recordText = new JTextArea();
     JLabel status = new JLabel("请输入书号并点击开始");
-    JLabel shuaXin = new JLabel("刷新时间(分钟)");
+    JLabel shuaXin = new JLabel("刷新时间(尚未完成)");
     JTextField updateInterval = new JTextField("");
-    JScrollPane scroll = new JScrollPane(recordText);
-    JLabel shuMing = new JLabel("书名：");
+    JScrollPane scrollPane = new JScrollPane(recordText);
+    JLabel shuMing = new JLabel("书名:");
     JLabel bookNameLabel = new JLabel("");
+    JLabel shouCang = new JLabel("收藏:");
+    JLabel xiHuan = new JLabel("喜欢:");
+    JLabel booked = new JLabel();
+    JLabel like = new JLabel();
+
 
     public String BookName;
     public int HitNum;
-    public float updateIntervalFloat;
+//    public float updateIntervalFloat;
 
     PrefManager pm = new PrefManager();
     FileManager fm = new FileManager();
+    HitUpdate hitUpdate = new HitUpdate();
+    GetHit getHit = new GetHit();
 
-    java.util.Timer timer = new Timer();
+//    java.util.Timer timer = new Timer();
 
     public MainWindow() {
-        setBounds(100, 100, 600, 300);
-        setTitle("SF点击查看器 by DE");
-        setVisible(true);
+        setBounds(100, 100, 650, 350);
+        setTitle("SF全能查看器 by DE");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null);
@@ -59,33 +63,48 @@ public class MainWindow extends JFrame {
         startButton.setSize(60, 25);
         startButton.setLocation(160, 20);
 
-        add(shuaXin);
-        shuaXin.setSize(150, 25);
-        shuaXin.setLocation(330, 200);
-        add(updateInterval);
-        updateInterval.setSize(50, 25);
-        updateInterval.setLocation(480, 200);
-
         add(shuMing);
         shuMing.setSize(50, 25);
-        shuMing.setLocation(330, 150);
+        shuMing.setLocation(380, 140);
         add(bookNameLabel);
         bookNameLabel.setSize(200, 25);
-        bookNameLabel.setLocation(370, 150);
+        bookNameLabel.setLocation(420, 140);
+
+        add(shouCang);
+        shouCang.setSize(50,25);
+        shouCang.setLocation(380, 185);
+        add(booked);
+        booked.setSize(200, 50);
+        booked.setLocation(420, 173);
+        booked.setFont(midSize);
+
+        add(xiHuan);
+        xiHuan.setSize(50,25);
+        xiHuan.setLocation(380, 230);
+        add(like);
+        like.setSize(200, 50);
+        like.setLocation(420, 218);
+        like.setFont(midSize);
+
+        add(shuaXin);
+        shuaXin.setSize(150, 25);
+        shuaXin.setLocation(380, 275);
+        add(updateInterval);
+        updateInterval.setSize(100, 25);
+        updateInterval.setLocation(500, 275);
 
         add(displayNum);
         displayNum.setSize(500, 100);
         displayNum.setLocation(50, 40);
         displayNum.setFont(numFont);
         displayNum.setForeground(Color.ORANGE);
-        add(recordText);
-        recordText.setSize(250, 110);
-        recordText.setLocation(40, 140);
-        recordText.setEnabled(false);
 
-        add(scroll);
-        scroll.setSize(20, 110);
-        scroll.setLocation(290, 140);
+        add(scrollPane);
+        scrollPane.setSize(320, 160);
+        scrollPane.setLocation(40, 140);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        recordText.setEditable(false);
+
         add(status);
         status.setSize(250, 25);
         status.setLocation(300, 20);
@@ -96,30 +115,30 @@ public class MainWindow extends JFrame {
             }
         });
 
-        updateInterval.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) {
-                changeInterval();
-            }
-
-            public void removeUpdate(DocumentEvent e) {
-                changeInterval();
-            }
-
-            public void changedUpdate(DocumentEvent e) {
-                changeInterval();
-            }
-            public void changeInterval(){
-                try{
-                    if (updateInterval.getText()!=""||updateInterval.getText()!=null)
-                    updateIntervalFloat = Float.parseFloat(updateInterval.getText());
-                    shuaXin.setText("刷新时间(分钟)");
-                } catch (NumberFormatException e){
-                    e.printStackTrace();
-                    shuaXin.setText("请输入正确的数字!");
-                }
-            }
-        });
-
+//        updateInterval.getDocument().addDocumentListener(new DocumentListener() {
+//            public void insertUpdate(DocumentEvent e) {
+//                changeInterval();
+//            }
+//
+//            public void removeUpdate(DocumentEvent e) {
+//                changeInterval();
+//            }
+//
+//            public void changedUpdate(DocumentEvent e) {
+//                changeInterval();
+//            }
+//            public void changeInterval(){
+//                try{
+//                    if (updateInterval.getText()!=""||updateInterval.getText()!=null)
+//                    updateIntervalFloat = Float.parseFloat(updateInterval.getText());
+//                    shuaXin.setText("刷新时间(分钟)");
+//                } catch (NumberFormatException e){
+//                    e.printStackTrace();
+//                    shuaXin.setText("请输入正确的数字!");
+//                }
+//            }
+//        });
+        setVisible(true);
 
         int prefNum = pm.readPref();
         if (prefNum != -1) {
@@ -127,20 +146,23 @@ public class MainWindow extends JFrame {
             fm.ReadFile(prefNum);
             displayNum.setText(String.valueOf(fm.getHit()));
             recordText.setText(String.valueOf(fm.getRecord()));
+            booked.setText(String.valueOf(fm.getBooked()));
+            like.setText(String.valueOf(fm.getLike()));
             updateNum();
         }
 
 
-        timer.schedule(
-                new java.util.TimerTask() { public void run()
-                { updateNum(); } }, 0, (int)updateIntervalFloat*60*1000);
+//        if (updateIntervalFloat!=0f){
+//        timer.schedule(
+//                new java.util.TimerTask() { public void run()
+//                { updateNum(); } }, 0, (int)updateIntervalFloat*1000);
+//        }
 
     }
 
     public void updateNum() {
         try {
             status.setText("正在抓取信息，请稍后...");
-            GetHit getHit = new GetHit();
             HitNum = getHit.GetHitNum(bookNum.getText());
             BookName = getHit.getBookName();
             //System.out.print(BookName);
@@ -155,11 +177,12 @@ public class MainWindow extends JFrame {
                     status.setText("更新成功 = w =");
                     displayNum.setText(HitNum + "");
                     bookNameLabel.setText(BookName);
-                    HitUpdate hitUpdate = new HitUpdate();
-                    String UpdateInfo = hitUpdate.Update(HitNum, BookNum);
-                    fm.WriteFile(BookNum, HitNum, UpdateInfo);
+                    String UpdateInfo = hitUpdate.Update(HitNum,getHit.getBooked(),getHit.getLike(), BookNum);
+                    fm.WriteFile(BookNum, HitNum, getHit.getBooked(),getHit.getLike(), UpdateInfo);
                     fm.ReadFile(BookNum);
                     recordText.setText(fm.getRecord());
+                    booked.setText(String.valueOf(fm.getBooked()));
+                    like.setText(String.valueOf(fm.getLike()));
                 }
             }
         } catch (Exception ex) {
@@ -173,4 +196,7 @@ public class MainWindow extends JFrame {
             pm.writePref(BookNum);
         }
     }
+
+
+
 }

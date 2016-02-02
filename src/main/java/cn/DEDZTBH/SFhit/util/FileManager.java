@@ -1,16 +1,17 @@
 package cn.DEDZTBH.SFhit.util;
 import java.io.*;
-import java.util.Timer;
 
 /**
  * Created by peiqi on 2015/12/29.
  */
 public class FileManager {
 
-    public File recordFile;
-    public String Record = "";
-    public String FileName;
-    public int Hit;
+    private File recordFile;
+    private String record = "";
+    private String FileName;
+    private int hit;
+    private int booked;
+    private int like;
 
 
     public void ReadFile(int BookNum){
@@ -18,10 +19,10 @@ public class FileManager {
             recordFile = new File(FileName);
             try{
                 if (recordFile.exists()==false) {
-                    System.out.println("file dne");
+//                    System.out.println("file dne");
                     initFile();
                 }else{
-                    System.out.println("file exist, read record");
+//                    System.out.println("file exist, read record");
                 ReadBookRecorded();
                 }
 
@@ -38,32 +39,50 @@ public class FileManager {
             build.append(line+"\n");
         }
         String Info = build.toString();
-        int div = Info.indexOf(",");
-        if (div < 0){return;}
-        Hit = Integer.parseInt(Info.substring(0,div));
-        System.out.println("read hit = "+Hit);
-        Record = Info.substring(div+1);
-        System.out.println("read record = "+Record);
+        int Div = Info.indexOf(",");
+        if (Div < 0){return;}
+        String[] datas = new String[4];
+        int div = -1;
+        String divided = Info;
+        for (int i = 0; i < datas.length; i++){
+            divided = divided.substring(div+1);
+//            System.out.println("divided="+divided);
+            div = divided.indexOf(",");
+//            System.out.println("newDiv="+div);
+            if(div<0){
+                datas[i]=divided;
+            }else {
+                datas[i]=divided.substring(0,div);
+            }
+//            System.out.println("i th ="+datas[i]);
+        }
+
+        hit = intlz(datas[0]);
+        System.out.println(datas[0]);
+        booked = intlz(datas[1]);
+        like = intlz(datas[2]);
+        record = datas[3];
+
     }
 
     public String getRecord(){
-        return Record;
+        return record;
     }
     public int getHit(){
-        return Hit;
+        return hit;
     }
 
-    public void WriteFile(int BookNum, int Hit, String Info) throws IOException {
+    public void WriteFile(int BookNum, int Hit, int Booked, int Like, String Info) throws IOException {
         ReadFile(BookNum);
         String OrgRecord = getRecord();
 
         if (Info!=null){
             recordFile.delete();
-            System.out.println("file deleted");
+//            System.out.println("file deleted");
             initFile();
             FileWriter BW = new FileWriter(recordFile);
-        BW.write(Hit+","+Info+"\n"+OrgRecord);
-            System.out.println("write record");
+        BW.write(Hit+","+Booked+","+Like+","+Info+"\n"+OrgRecord);
+//            System.out.println("write record");
             BW.flush();
             BW.close();
         }
@@ -75,9 +94,15 @@ public class FileManager {
         try {
             recordFile.createNewFile();
             recordFile.mkdirs();
-            System.out.println("record file init");
+//            System.out.println("record file init");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private int intlz(String s){return Integer.parseInt(s);}
+
+    public int getBooked(){return booked;}
+    public int getLike(){return like;}
+
 }

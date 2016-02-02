@@ -10,13 +10,14 @@ import java.net.UnknownHostException;
  * Created by peiqi on 2015/12/28.
  */
 public class GetHit {
-        public String urlStr;
+        private String urlStr;
         public String BookName;
-        public HttpURLConnection Conn;
-        public boolean UnknownHosts = false;
-        public int ret;
-        public int booked;
-        public int like;
+        private HttpURLConnection Conn;
+        private boolean UnknownHosts = false;
+        private int ret;
+        private int booked;
+        private int like;
+        private String content;
 
     public int GetHitNum(String bookNum) throws IOException {
         urlStr = "http://m.sfacg.com/b/"+bookNum;
@@ -40,14 +41,15 @@ public class GetHit {
         while ((line = bufRead.readLine())!=null){
             contentBuild.append(line);
         }
-        String content = contentBuild.toString();
-        //System.out.println(content);
-        BookName = CutContent(content);
+        content = contentBuild.toString();
+//        System.out.println(content);
+        BookName = getBookName(content);
         if (BookName==null){
             ret = -2;
         }else{
             //System.out.println(BookName);
-            ret= GetBookNum(content);
+            ret= getBookNum(content);
+            getBookedAndLike(content);
             }
         }
         }else{
@@ -56,7 +58,7 @@ public class GetHit {
         return ret;
     }
 
-    public String CutContent(String Content) {
+    private String getBookName(String Content) {
         String StrTag = "<title>";
         int StartTag = Content.indexOf(StrTag)+StrTag.length();
         int EndTag = Content.indexOf("</title>");
@@ -70,7 +72,7 @@ public class GetHit {
         }
     }
 
-    public int GetBookNum(String Content){
+    private int getBookNum(String Content){
         String StrTag = "<span class=\"book_info3\">";
         int StartTag = Content.indexOf(StrTag)+StrTag.length();
         int EndTag = Content.indexOf("<br>");
@@ -88,4 +90,35 @@ public class GetHit {
     public String getBookName(){
         return BookName;
     }
+
+
+
+    private void getBookedAndLike(String content){
+        int start = content.indexOf("<span class=\"icon-heart2\">");
+        String cuttedContent = content.substring(start);
+
+        int shouCang = cuttedContent.indexOf("收藏");
+        int zan = cuttedContent.indexOf("赞");
+        int daShang = cuttedContent.indexOf("打赏");
+
+        int[] tags = {shouCang,zan,daShang};
+        int[] result = new int[2];
+        String temp;
+        String resultStartTag = "<small> ";
+        String resultEndTag = "</small>";
+
+        for (int i = 0; i < tags.length-1; i++){
+            temp = cuttedContent.substring(tags[i],tags[i+1]);
+            result[i]=Integer.parseInt(temp.substring(temp.indexOf(resultStartTag)+resultStartTag.length(),temp.indexOf(resultEndTag)));
+        }
+
+        booked = result[0];
+        like = result[1];
+    }
+
+    public int getBooked(){return booked;}
+    public int getLike(){return like;}
 }
+
+
+
