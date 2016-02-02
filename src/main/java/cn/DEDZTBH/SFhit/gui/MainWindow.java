@@ -48,7 +48,7 @@ public class MainWindow extends JFrame {
 
     public MainWindow() {
         setBounds(100, 100, 650, 350);
-        setTitle("SF全能查看器 by DE");
+        setTitle("DEのSF全能查看器 1.0-SNAPSHOT");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null);
@@ -178,6 +178,7 @@ public class MainWindow extends JFrame {
                     displayNum.setText(HitNum + "");
                     bookNameLabel.setText(BookName);
                     String UpdateInfo = hitUpdate.Update(HitNum,getHit.getBooked(),getHit.getLike(), BookNum);
+                    status.setText(UpdateInfo==null?"更新成功 = w =":"更新成功，有新收获哦 = w =");
                     fm.WriteFile(BookNum, HitNum, getHit.getBooked(),getHit.getLike(), UpdateInfo);
                     fm.ReadFile(BookNum);
                     recordText.setText(fm.getRecord());
