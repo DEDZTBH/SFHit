@@ -1,6 +1,5 @@
 # DEのSF全能查看器 1.0 - SNAPSHOT
-SF点击查看器
-
+SF点击查看器 version=={1.0 - SNAPSHOT}
 DEのSF全能查看器 1.0 - SNAPSHOT！
 
 我的优势：
