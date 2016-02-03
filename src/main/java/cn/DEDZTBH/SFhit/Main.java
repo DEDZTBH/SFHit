@@ -10,7 +10,6 @@ public class Main {
             MainWindow window = new MainWindow();
 
 
-
         }catch (Exception e){
             e.printStackTrace();
         }

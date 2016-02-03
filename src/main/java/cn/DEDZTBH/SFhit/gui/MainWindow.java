@@ -13,12 +13,13 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.*;
 
 /**
  * Created by peiqi on 2015/12/28.
  */
 public class MainWindow extends JFrame {
-    final String VERSION = "1.1 - SNAPSHOT";
+    final String VERSION = "1.2";
     JLabel versionStatus = new JLabel("正在检查更新...");
 
     final JLabel shuHao = new JLabel("书号：");
@@ -29,7 +30,7 @@ public class MainWindow extends JFrame {
     Font midSize = new Font("Arial", Font.LAYOUT_NO_LIMIT_CONTEXT, 32);
     JTextArea recordText = new JTextArea();
     JLabel status = new JLabel("请输入书号并点击开始");
-    final JLabel shuaXin = new JLabel("刷新时间(尚未完成)");
+    final JLabel shuaXin = new JLabel("刷新时间(秒)");
     JTextField updateInterval = new JTextField("");
     JScrollPane scrollPane = new JScrollPane(recordText);
     final JLabel shuMing = new JLabel("书名:");
@@ -39,11 +40,14 @@ public class MainWindow extends JFrame {
     JLabel booked = new JLabel();
     JLabel like = new JLabel();
     JLabel advert = new JLabel("点击这里赢本子!!!");
+    JButton timeButton = new JButton("确认");
+    boolean firstUpdateDone = false;
 
 
     public String BookName;
     public int HitNum;
-//    public float updateIntervalFloat;
+    public int updateIntervalInt = -1;
+    public int bookNumber = -1;
 
     PrefManager pm = new PrefManager();
     FileManager fm = new FileManager();
@@ -51,11 +55,11 @@ public class MainWindow extends JFrame {
     GetHit getHit = new GetHit();
     updateChecker uc = new updateChecker();
 
-//    java.util.Timer timer = new Timer();
+    java.util.Timer timer = new java.util.Timer();
 
     public MainWindow() {
         setBounds(100, 100, 650, 350);
-        setTitle("DEのSF全能查看器 1.1-SNAPSHOT");
+        setTitle("DEのSF全能查看器 1.2");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null);
@@ -94,11 +98,19 @@ public class MainWindow extends JFrame {
         like.setFont(midSize);
 
         add(shuaXin);
-        shuaXin.setSize(150, 25);
+        shuaXin.setSize(125, 25);
         shuaXin.setLocation(380, 275);
         add(updateInterval);
-        updateInterval.setSize(100, 25);
-        updateInterval.setLocation(500, 275);
+        updateInterval.setSize(75, 25);
+        updateInterval.setLocation(475, 275);
+        add(timeButton);
+        timeButton.setSize(60, 25);
+        timeButton.setLocation(560, 275);
+        timeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                changeInterval();
+            }
+        });
 
         add(displayNum);
         displayNum.setSize(500, 100);
@@ -134,17 +146,10 @@ public class MainWindow extends JFrame {
 //            public void changedUpdate(DocumentEvent e) {
 //                changeInterval();
 //            }
-//            public void changeInterval(){
-//                try{
-//                    if (updateInterval.getText()!=""||updateInterval.getText()!=null)
-//                    updateIntervalFloat = Float.parseFloat(updateInterval.getText());
-//                    shuaXin.setText("刷新时间(分钟)");
-//                } catch (NumberFormatException e){
-//                    e.printStackTrace();
-//                    shuaXin.setText("请输入正确的数字!");
-//                }
-//            }
+//
 //        });
+
+
 
         add(advert);
         advert.setSize(125,25);
@@ -182,7 +187,9 @@ public class MainWindow extends JFrame {
 
         setVisible(true);
 
-        int prefNum = pm.readPref();
+        pm.readPref();
+        int prefNum = pm.getBookNum();
+        int prefUpdItv = pm.getUpdateIntv();
         if (prefNum != -1) {
             bookNum.setText(String.valueOf(prefNum));
             fm.ReadFile(prefNum);
@@ -190,7 +197,19 @@ public class MainWindow extends JFrame {
             recordText.setText(String.valueOf(fm.getRecord()));
             booked.setText(String.valueOf(fm.getBooked()));
             like.setText(String.valueOf(fm.getLike()));
+            bookNumber = prefNum;
+            if (!firstUpdateDone){
             updateNum();
+            firstUpdateDone = true;
+            }
+        }
+        if (prefUpdItv!=-1){
+            this.updateIntervalInt = prefUpdItv;
+            updateInterval.setText(String.valueOf(prefUpdItv));
+            if (!firstUpdateDone){
+                applyInterval(true);
+                firstUpdateDone = true;
+            }else {applyInterval(false);}
         }
 
 
@@ -250,12 +269,6 @@ public class MainWindow extends JFrame {
             e.printStackTrace();
         }
 
-//        if (updateIntervalFloat!=0f){
-//        timer.schedule(
-//                new java.util.TimerTask() { public void run()
-//                { updateNum(); } }, 0, (int)updateIntervalFloat*1000);
-//        }
-
     }
 
     public void updateNum() {
@@ -270,15 +283,15 @@ public class MainWindow extends JFrame {
                 if (HitNum == -2) {
                     status.setText("信息获取失败，请检查书号是否输入正确");
                 } else {
-                    int BookNum = Integer.parseInt(bookNum.getText());
-                    updatePref(BookNum);
+                    bookNumber = Integer.parseInt(bookNum.getText());
+                    updatePref(bookNumber,updateIntervalInt);
                     status.setText("更新成功 = w =");
                     displayNum.setText(HitNum + "");
                     bookNameLabel.setText(BookName);
-                    String UpdateInfo = hitUpdate.Update(HitNum,getHit.getBooked(),getHit.getLike(), BookNum);
+                    String UpdateInfo = hitUpdate.Update(HitNum,getHit.getBooked(),getHit.getLike(), bookNumber);
                     status.setText(UpdateInfo==null?"更新成功 = w =":"更新成功，有新收获哦 = w =");
-                    fm.WriteFile(BookNum, HitNum, getHit.getBooked(),getHit.getLike(), UpdateInfo);
-                    fm.ReadFile(BookNum);
+                    fm.WriteFile(bookNumber, HitNum, getHit.getBooked(),getHit.getLike(), UpdateInfo);
+                    fm.ReadFile(bookNumber);
                     recordText.setText(fm.getRecord());
                     booked.setText(String.valueOf(fm.getBooked()));
                     like.setText(String.valueOf(fm.getLike()));
@@ -290,12 +303,43 @@ public class MainWindow extends JFrame {
 
     }
 
-    public void updatePref(int BookNum) {
-        if (BookNum!=pm.readPref()){
-            pm.writePref(BookNum);
+    public void updatePref(int BookNum, int updateIntervalInt) {
+        pm.readPref();
+        if ((BookNum!=pm.getBookNum()&&BookNum!=-1)||(updateIntervalInt!=pm.getUpdateIntv()&&updateIntervalInt!=-1)){
+            pm.writePref(BookNum,updateIntervalInt);
         }
     }
 
+    public void changeInterval(){
+        try{
+            if (!updateInterval.getText().equals("")&&updateInterval.getText()!=null)
+                updateIntervalInt = Integer.parseInt(updateInterval.getText());
+                if (updateIntervalInt <= 0){
+                    shuaXin.setText("请输入正整数!");
+                    return;
+                }
+            shuaXin.setText("刷新时间(秒)");
+            updatePref(bookNumber,updateIntervalInt);
+            applyInterval(false);
+        } catch (NumberFormatException e){
+            shuaXin.setText("请输入整数!");
+        }
+    }
 
+    public void applyInterval(boolean refreshNow){
+        timer.cancel();
+        timer = new java.util.Timer();
+        int rf;
+        if (!refreshNow){
+            rf = updateIntervalInt*1000;
+        }else {
+            rf = 0;
+        }
+        timer.schedule(new TimerTask(){
+            public void run() {
+                updateNum();
+            }
+        },(long)rf,(long)updateIntervalInt*1000);
+    }
 
 }

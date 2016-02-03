@@ -17,8 +17,10 @@ public class FileManager {
     public void ReadFile(int BookNum){
             FileName = BookNum + ".txt";
             recordFile = new File(FileName);
+            record = "";
+            hit = booked = like = 0 ;
             try{
-                if (recordFile.exists()==false) {
+                if (!recordFile.exists()) {
 //                    System.out.println("file dne");
                     initFile();
                 }else{
@@ -58,7 +60,7 @@ public class FileManager {
         }
 
         hit = intlz(datas[0]);
-        System.out.println(datas[0]);
+//        System.out.println(datas[0]);
         booked = intlz(datas[1]);
         like = intlz(datas[2]);
         record = datas[3];
@@ -74,7 +76,7 @@ public class FileManager {
 
     public void WriteFile(int BookNum, int Hit, int Booked, int Like, String Info) throws IOException {
         ReadFile(BookNum);
-        String OrgRecord = getRecord();
+        String OrgRecord = record;
 
         if (Info!=null){
             recordFile.delete();

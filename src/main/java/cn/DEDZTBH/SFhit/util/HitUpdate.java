@@ -30,7 +30,7 @@ public class HitUpdate {
         if (increaseLike != 0) {
             build.append(" 喜欢+" + increaseLike);
         }
-        System.out.println(build.toString());
+//        System.out.println(build.toString());
         return build.toString().equals(UpdateInfo)?null:build.toString();
     }
 
