@@ -2,37 +2,43 @@ package cn.DEDZTBH.SFhit.gui;
 
 import javax.swing.*;
 
-import cn.DEDZTBH.SFhit.SFacg.GetHit;
+import cn.DEDZTBH.SFhit.netUtil.GetHit;
+import cn.DEDZTBH.SFhit.netUtil.updateChecker;
 import cn.DEDZTBH.SFhit.util.FileManager;
 import cn.DEDZTBH.SFhit.util.HitUpdate;
 import cn.DEDZTBH.SFhit.util.PrefManager;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Timer;
+import java.awt.event.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Created by peiqi on 2015/12/28.
  */
 public class MainWindow extends JFrame {
-    JLabel shuHao = new JLabel("书号：");
+    final String VERSION = "1.1 - SNAPSHOT";
+    JLabel versionStatus = new JLabel("正在检查更新...");
+
+    final JLabel shuHao = new JLabel("书号：");
     JTextField bookNum = new JTextField("");
-    JButton startButton = new JButton("开始");
+    final JButton startButton = new JButton("开始");
     JLabel displayNum = new JLabel("0");
     Font numFont = new Font("Arial Black", Font.BOLD, 80);
     Font midSize = new Font("Arial", Font.LAYOUT_NO_LIMIT_CONTEXT, 32);
     JTextArea recordText = new JTextArea();
     JLabel status = new JLabel("请输入书号并点击开始");
-    JLabel shuaXin = new JLabel("刷新时间(尚未完成)");
+    final JLabel shuaXin = new JLabel("刷新时间(尚未完成)");
     JTextField updateInterval = new JTextField("");
     JScrollPane scrollPane = new JScrollPane(recordText);
-    JLabel shuMing = new JLabel("书名:");
-    JLabel bookNameLabel = new JLabel("");
-    JLabel shouCang = new JLabel("收藏:");
-    JLabel xiHuan = new JLabel("喜欢:");
+    final JLabel shuMing = new JLabel("书名:");
+    final JLabel bookNameLabel = new JLabel("");
+    final JLabel shouCang = new JLabel("收藏:");
+    final JLabel xiHuan = new JLabel("喜欢:");
     JLabel booked = new JLabel();
     JLabel like = new JLabel();
+    JLabel advert = new JLabel("点击这里赢本子!!!");
 
 
     public String BookName;
@@ -43,6 +49,7 @@ public class MainWindow extends JFrame {
     FileManager fm = new FileManager();
     HitUpdate hitUpdate = new HitUpdate();
     GetHit getHit = new GetHit();
+    updateChecker uc = new updateChecker();
 
 //    java.util.Timer timer = new Timer();
 
@@ -107,7 +114,7 @@ public class MainWindow extends JFrame {
 
         add(status);
         status.setSize(250, 25);
-        status.setLocation(300, 20);
+        status.setLocation(300, 25);
 
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -138,6 +145,41 @@ public class MainWindow extends JFrame {
 //                }
 //            }
 //        });
+
+        add(advert);
+        advert.setSize(125,25);
+        advert.setLocation(525,0);
+        new colorChanger(this.advert).start();
+        advert.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                URI uri;
+                Desktop dsktp = Desktop.getDesktop();
+                try {
+                    uri= new URI("http://book.sfacg.com/Novel/43467/");
+                    if (Desktop.isDesktopSupported()&&dsktp.isSupported(Desktop.Action.BROWSE)){
+                        dsktp.browse(uri);
+                    }
+                } catch (URISyntaxException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+            }
+
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        add(versionStatus);
+        versionStatus.setSize(275,25);
+        versionStatus.setLocation(250,0);
+
         setVisible(true);
 
         int prefNum = pm.readPref();
@@ -151,6 +193,62 @@ public class MainWindow extends JFrame {
             updateNum();
         }
 
+
+        try {
+            String newVer = uc.getUpdate(VERSION);
+            if (newVer.equals("-1")){
+                versionStatus.setText("网络错误,无法获取信息");
+            }else{
+                if (newVer.equals("0")){
+                    versionStatus.setText("你使用的是最新版本!");
+                }else{
+                    versionStatus.setText("检查到新版本:"+newVer+" 点击此处更新!");
+                    versionStatus.setForeground(Color.red);
+                    versionStatus.addMouseListener(new MouseAdapter() {
+                        public void mouseClicked(MouseEvent e) {
+                            String[] options = {"国内","国外"};
+                            int opt = JOptionPane.showOptionDialog(MainWindow.this,"你在国内还是国外？","选择下载地址",JOptionPane.DEFAULT_OPTION,JOptionPane.YES_NO_OPTION,null,options,"国内");
+                            URI uri = null;
+                            if (opt==JOptionPane.YES_OPTION){
+                                try {
+                                    uri= new URI("http://pan.baidu.com/s/1c0QuKLE");
+                                } catch (URISyntaxException e1) {
+                                    e1.printStackTrace();
+                                }
+                            }
+                            if (opt==JOptionPane.NO_OPTION){
+                                try {
+                                    uri= new URI("https://drive.google.com/folderview?id=0B553ho8lC0IhUW5rTk9QajlrTXc&usp=sharing");
+                                } catch (URISyntaxException e1) {
+                                    e1.printStackTrace();
+                                }
+                            }
+
+
+                            Desktop dsktp = Desktop.getDesktop();
+                            try {
+
+                                if (Desktop.isDesktopSupported()&&dsktp.isSupported(Desktop.Action.BROWSE)){
+                                    dsktp.browse(uri);
+                                }
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+
+                        }
+
+                        public void mouseEntered(MouseEvent e) {
+
+                        }
+                        public void mouseExited(MouseEvent e) {
+
+                        }
+                    });
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 //        if (updateIntervalFloat!=0f){
 //        timer.schedule(
