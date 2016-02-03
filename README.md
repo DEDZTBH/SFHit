@@ -27,6 +27,10 @@ psps Java可是世界第一大编程语言你们竟然不知道！你们不玩MC
 目前目标：1.实现定时更新
 2.把为记录文件创建一个文件夹
 
+下载地址：
+国内：http://pan.baidu.com/s/1c0QuKLE
+国外：https://drive.google.com/folderview?id=0B553ho8lC0IhUW5rTk9QajlrTXc&usp=sharing
+
 源代码：https://github.com/DEDZTBH/SFHit
 开源万岁！
 ps我一个善良的学生党你们竟然怀疑我有病毒
