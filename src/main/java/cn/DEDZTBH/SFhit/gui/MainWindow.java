@@ -55,7 +55,7 @@ public class MainWindow extends JFrame {
 
     public MainWindow() {
         setBounds(100, 100, 650, 350);
-        setTitle("DEのSF全能查看器 1.0-SNAPSHOT");
+        setTitle("DEのSF全能查看器 1.1-SNAPSHOT");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null);
