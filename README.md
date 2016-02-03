@@ -1,4 +1,4 @@
-# SFHit
+# DEのSF全能查看器 1.0 - SNAPSHOT
 SF点击查看器
 
 DEのSF全能查看器 1.0 - SNAPSHOT！
