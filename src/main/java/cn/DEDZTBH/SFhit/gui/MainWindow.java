@@ -19,7 +19,7 @@ import java.util.*;
  * Created by peiqi on 2015/12/28.
  */
 public class MainWindow extends JFrame {
-    final String VERSION = "1.2";
+    final String VERSION = "1.3";
     JLabel versionStatus = new JLabel("正在检查更新...");
 
     final JLabel shuHao = new JLabel("书号：");
@@ -41,8 +41,6 @@ public class MainWindow extends JFrame {
     JLabel like = new JLabel();
     JLabel advert = new JLabel("点击这里赢本子!!!");
     JButton timeButton = new JButton("确认");
-    boolean firstUpdateDone = false;
-
 
     public String BookName;
     public int HitNum;
@@ -198,18 +196,14 @@ public class MainWindow extends JFrame {
             booked.setText(String.valueOf(fm.getBooked()));
             like.setText(String.valueOf(fm.getLike()));
             bookNumber = prefNum;
-            if (!firstUpdateDone){
-            updateNum();
-            firstUpdateDone = true;
-            }
         }
         if (prefUpdItv!=-1){
             this.updateIntervalInt = prefUpdItv;
-            updateInterval.setText(String.valueOf(prefUpdItv));
-            if (!firstUpdateDone){
-                applyInterval(true);
-                firstUpdateDone = true;
-            }else {applyInterval(false);}
+            updateInterval.setText(String.valueOf(updateIntervalInt));
+            applyInterval(false);
+        }
+        if (prefNum != -1){
+            updateNum();
         }
 
 
