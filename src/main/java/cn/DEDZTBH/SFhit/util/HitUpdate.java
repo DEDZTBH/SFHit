@@ -16,19 +16,19 @@ public class HitUpdate {
         int origLike = fm.getLike();
 //        System.out.println("org hit = " + origHit);
         String UpdateInfo = "[" + getCurrentTime() + "]";
-        int increaseHit = NewHit - origHit;
-        int increaseBooked = NewBooked - origBooked;
-        int increaseLike = NewLike - origLike;
+        int changeHit = NewHit - origHit;
+        int changeBooked = NewBooked - origBooked;
+        int changeLike = NewLike - origLike;
         StringBuilder build = new StringBuilder();
         build.append(UpdateInfo);
-        if (increaseHit != 0) {
-            build.append(" 点击+" + increaseHit);
+        if (changeHit != 0) {
+            build.append(" 点击" + (changeHit>0?"+":"") + changeHit);
         }
-        if (increaseBooked != 0) {
-            build.append(" 收藏+" + increaseBooked);
+        if (changeBooked != 0) {
+            build.append(" 收藏" + (changeBooked>0?"+":"") + changeBooked);
         }
-        if (increaseLike != 0) {
-            build.append(" 喜欢+" + increaseLike);
+        if (changeLike != 0) {
+            build.append(" 喜欢" + (changeLike>0?"+":"") + changeLike);
         }
 //        System.out.println(build.toString());
         return build.toString().equals(UpdateInfo)?null:build.toString();

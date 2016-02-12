@@ -19,7 +19,7 @@ import java.util.*;
  * Created by peiqi on 2015/12/28.
  */
 public class MainWindow extends JFrame {
-    final String VERSION = "1.3";
+    final String VERSION = "1.4";
     JLabel versionStatus = new JLabel("正在检查更新...");
 
     final JLabel shuHao = new JLabel("书号：");
@@ -57,7 +57,7 @@ public class MainWindow extends JFrame {
 
     public MainWindow() {
         setBounds(100, 100, 650, 350);
-        setTitle("DEのSF全能查看器 1.2");
+        setTitle("DEのSF全能查看器 "+VERSION);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null);
@@ -283,7 +283,17 @@ public class MainWindow extends JFrame {
                     displayNum.setText(HitNum + "");
                     bookNameLabel.setText(BookName);
                     String UpdateInfo = hitUpdate.Update(HitNum,getHit.getBooked(),getHit.getLike(), bookNumber);
-                    status.setText(UpdateInfo==null?"更新成功 = w =":"更新成功，有新收获哦 = w =");
+                    String statusInfo;
+                    if (UpdateInfo == null){
+                        statusInfo = "更新成功 = w =";
+                    }else{
+                        if (UpdateInfo.contains("点击-")||UpdateInfo.contains("收藏-")||UpdateInfo.contains("喜欢-")){
+                            statusInfo = "更新成功，再接再厉吧 = w =";
+                        }else{
+                            statusInfo = "更新成功，有新收获哦 = w =";
+                        }
+                    }
+                    status.setText(statusInfo);
                     fm.WriteFile(bookNumber, HitNum, getHit.getBooked(),getHit.getLike(), UpdateInfo);
                     fm.ReadFile(bookNumber);
                     recordText.setText(fm.getRecord());
