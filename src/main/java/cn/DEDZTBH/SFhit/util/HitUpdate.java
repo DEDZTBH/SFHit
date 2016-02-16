@@ -32,6 +32,7 @@ public class HitUpdate {
             build.append(" 喜欢" + (changeLike > 0 ? "+" : "") + changeLike);
         }
 //        System.out.println(build.toString());
+        fm = null;
         return build.toString().equals(UpdateInfo) ? null : build.toString();
     }
 

@@ -264,7 +264,7 @@ public class MainWindow extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        uc = null;
     }
 
     public void updateNum() {

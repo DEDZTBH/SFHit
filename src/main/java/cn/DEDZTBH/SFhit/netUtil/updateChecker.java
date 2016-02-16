@@ -7,10 +7,8 @@ import java.io.IOException;
  */
 public class updateChecker {
 
-    getWebPage gwp = new getWebPage();
-
     public String getUpdate(String currentVer) throws IOException {
-        String content = gwp.getWebPage("https://coding.net/u/DE_DZ_TBH/p/SFHit/git/raw/master/README.md");
+        String content = new getWebPage().getWebPage("https://coding.net/u/DE_DZ_TBH/p/SFHit/git/raw/master/README.md");
         if (content.equals("-1") || content.equals("-2")) {
             return "-1";
         } else {
