@@ -1,25 +1,27 @@
 package cn.DEDZTBH.SFhit.gui;
 
-import javax.swing.*;
-
 import cn.DEDZTBH.SFhit.netUtil.GetHit;
 import cn.DEDZTBH.SFhit.netUtil.updateChecker;
 import cn.DEDZTBH.SFhit.util.FileManager;
 import cn.DEDZTBH.SFhit.util.HitUpdate;
 import cn.DEDZTBH.SFhit.util.PrefManager;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.TimerTask;
 
 /**
  * Created by peiqi on 2015/12/28.
  */
 public class MainWindow extends JFrame {
-    final String VERSION = "1.4";
+    final String VERSION = "1.5";
     JLabel versionStatus = new JLabel("正在检查更新...");
 
     final JLabel shuHao = new JLabel("书号：");
@@ -57,7 +59,7 @@ public class MainWindow extends JFrame {
 
     public MainWindow() {
         setBounds(100, 100, 650, 350);
-        setTitle("DEのSF全能查看器 "+VERSION);
+        setTitle("DEのSF全能查看器 " + VERSION);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null);
@@ -80,7 +82,7 @@ public class MainWindow extends JFrame {
         bookNameLabel.setLocation(420, 140);
 
         add(shouCang);
-        shouCang.setSize(50,25);
+        shouCang.setSize(50, 25);
         shouCang.setLocation(380, 185);
         add(booked);
         booked.setSize(200, 50);
@@ -88,7 +90,7 @@ public class MainWindow extends JFrame {
         booked.setFont(midSize);
 
         add(xiHuan);
-        xiHuan.setSize(50,25);
+        xiHuan.setSize(50, 25);
         xiHuan.setLocation(380, 230);
         add(like);
         like.setSize(200, 50);
@@ -148,18 +150,17 @@ public class MainWindow extends JFrame {
 //        });
 
 
-
         add(advert);
-        advert.setSize(125,25);
-        advert.setLocation(525,0);
+        advert.setSize(125, 25);
+        advert.setLocation(525, 0);
         new colorChanger(this.advert).start();
         advert.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 URI uri;
                 Desktop dsktp = Desktop.getDesktop();
                 try {
-                    uri= new URI("http://book.sfacg.com/Novel/43467/");
-                    if (Desktop.isDesktopSupported()&&dsktp.isSupported(Desktop.Action.BROWSE)){
+                    uri = new URI("http://book.sfacg.com/Novel/43467/");
+                    if (Desktop.isDesktopSupported() && dsktp.isSupported(Desktop.Action.BROWSE)) {
                         dsktp.browse(uri);
                     }
                 } catch (URISyntaxException e1) {
@@ -180,8 +181,8 @@ public class MainWindow extends JFrame {
         });
 
         add(versionStatus);
-        versionStatus.setSize(275,25);
-        versionStatus.setLocation(250,0);
+        versionStatus.setSize(275, 25);
+        versionStatus.setLocation(250, 0);
 
         setVisible(true);
 
@@ -197,41 +198,41 @@ public class MainWindow extends JFrame {
             like.setText(String.valueOf(fm.getLike()));
             bookNumber = prefNum;
         }
-        if (prefUpdItv!=-1){
+        if (prefUpdItv != -1) {
             this.updateIntervalInt = prefUpdItv;
             updateInterval.setText(String.valueOf(updateIntervalInt));
             applyInterval(false);
         }
-        if (prefNum != -1){
+        if (prefNum != -1) {
             updateNum();
         }
 
 
         try {
             String newVer = uc.getUpdate(VERSION);
-            if (newVer.equals("-1")){
+            if (newVer.equals("-1")) {
                 versionStatus.setText("网络错误,无法获取信息");
-            }else{
-                if (newVer.equals("0")){
+            } else {
+                if (newVer.equals("0")) {
                     versionStatus.setText("你使用的是最新版本!");
-                }else{
-                    versionStatus.setText("检查到新版本:"+newVer+" 点击此处更新!");
+                } else {
+                    versionStatus.setText("检查到新版本:" + newVer + " 点击此处更新!");
                     versionStatus.setForeground(Color.red);
                     versionStatus.addMouseListener(new MouseAdapter() {
                         public void mouseClicked(MouseEvent e) {
-                            String[] options = {"国内","国外"};
-                            int opt = JOptionPane.showOptionDialog(MainWindow.this,"你在国内还是国外？","选择下载地址",JOptionPane.DEFAULT_OPTION,JOptionPane.YES_NO_OPTION,null,options,"国内");
+                            String[] options = {"国内", "国外"};
+                            int opt = JOptionPane.showOptionDialog(MainWindow.this, "你在国内还是国外？", "选择下载地址", JOptionPane.DEFAULT_OPTION, JOptionPane.YES_NO_OPTION, null, options, "国内");
                             URI uri = null;
-                            if (opt==JOptionPane.YES_OPTION){
+                            if (opt == JOptionPane.YES_OPTION) {
                                 try {
-                                    uri= new URI("http://pan.baidu.com/s/1c0QuKLE");
+                                    uri = new URI("http://pan.baidu.com/s/1c0QuKLE");
                                 } catch (URISyntaxException e1) {
                                     e1.printStackTrace();
                                 }
                             }
-                            if (opt==JOptionPane.NO_OPTION){
+                            if (opt == JOptionPane.NO_OPTION) {
                                 try {
-                                    uri= new URI("https://drive.google.com/folderview?id=0B553ho8lC0IhUW5rTk9QajlrTXc&usp=sharing");
+                                    uri = new URI("https://drive.google.com/folderview?id=0B553ho8lC0IhUW5rTk9QajlrTXc&usp=sharing");
                                 } catch (URISyntaxException e1) {
                                     e1.printStackTrace();
                                 }
@@ -241,7 +242,7 @@ public class MainWindow extends JFrame {
                             Desktop dsktp = Desktop.getDesktop();
                             try {
 
-                                if (Desktop.isDesktopSupported()&&dsktp.isSupported(Desktop.Action.BROWSE)){
+                                if (Desktop.isDesktopSupported() && dsktp.isSupported(Desktop.Action.BROWSE)) {
                                     dsktp.browse(uri);
                                 }
                             } catch (IOException e1) {
@@ -253,6 +254,7 @@ public class MainWindow extends JFrame {
                         public void mouseEntered(MouseEvent e) {
 
                         }
+
                         public void mouseExited(MouseEvent e) {
 
                         }
@@ -262,7 +264,7 @@ public class MainWindow extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        uc = null;
     }
 
     public void updateNum() {
@@ -278,23 +280,23 @@ public class MainWindow extends JFrame {
                     status.setText("信息获取失败，请检查书号是否输入正确");
                 } else {
                     bookNumber = Integer.parseInt(bookNum.getText());
-                    updatePref(bookNumber,updateIntervalInt);
+                    updatePref(bookNumber, updateIntervalInt);
                     status.setText("更新成功 = w =");
                     displayNum.setText(HitNum + "");
                     bookNameLabel.setText(BookName);
-                    String UpdateInfo = hitUpdate.Update(HitNum,getHit.getBooked(),getHit.getLike(), bookNumber);
+                    String UpdateInfo = hitUpdate.Update(HitNum, getHit.getBooked(), getHit.getLike(), bookNumber);
                     String statusInfo;
-                    if (UpdateInfo == null){
+                    if (UpdateInfo == null) {
                         statusInfo = "更新成功 = w =";
-                    }else{
-                        if (UpdateInfo.contains("点击-")||UpdateInfo.contains("收藏-")||UpdateInfo.contains("喜欢-")){
+                    } else {
+                        if (UpdateInfo.contains("点击-") || UpdateInfo.contains("收藏-") || UpdateInfo.contains("喜欢-")) {
                             statusInfo = "更新成功，再接再厉吧 = w =";
-                        }else{
+                        } else {
                             statusInfo = "更新成功，有新收获哦 = w =";
                         }
                     }
                     status.setText(statusInfo);
-                    fm.WriteFile(bookNumber, HitNum, getHit.getBooked(),getHit.getLike(), UpdateInfo);
+                    fm.WriteFile(bookNumber, HitNum, getHit.getBooked(), getHit.getLike(), UpdateInfo);
                     fm.ReadFile(bookNumber);
                     recordText.setText(fm.getRecord());
                     booked.setText(String.valueOf(fm.getBooked()));
@@ -309,41 +311,41 @@ public class MainWindow extends JFrame {
 
     public void updatePref(int BookNum, int updateIntervalInt) {
         pm.readPref();
-        if ((BookNum!=pm.getBookNum()&&BookNum!=-1)||(updateIntervalInt!=pm.getUpdateIntv()&&updateIntervalInt!=-1)){
-            pm.writePref(BookNum,updateIntervalInt);
+        if ((BookNum != pm.getBookNum() && BookNum != -1) || (updateIntervalInt != pm.getUpdateIntv() && updateIntervalInt != -1)) {
+            pm.writePref(BookNum, updateIntervalInt);
         }
     }
 
-    public void changeInterval(){
-        try{
-            if (!updateInterval.getText().equals("")&&updateInterval.getText()!=null)
+    public void changeInterval() {
+        try {
+            if (!updateInterval.getText().equals("") && updateInterval.getText() != null)
                 updateIntervalInt = Integer.parseInt(updateInterval.getText());
-                if (updateIntervalInt <= 0){
-                    shuaXin.setText("请输入正整数!");
-                    return;
-                }
+            if (updateIntervalInt <= 0) {
+                shuaXin.setText("请输入正整数!");
+                return;
+            }
             shuaXin.setText("刷新时间(秒)");
-            updatePref(bookNumber,updateIntervalInt);
+            updatePref(bookNumber, updateIntervalInt);
             applyInterval(false);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             shuaXin.setText("请输入整数!");
         }
     }
 
-    public void applyInterval(boolean refreshNow){
+    public void applyInterval(boolean refreshNow) {
         timer.cancel();
         timer = new java.util.Timer();
         int rf;
-        if (!refreshNow){
-            rf = updateIntervalInt*1000;
-        }else {
+        if (!refreshNow) {
+            rf = updateIntervalInt * 1000;
+        } else {
             rf = 0;
         }
-        timer.schedule(new TimerTask(){
+        timer.schedule(new TimerTask() {
             public void run() {
                 updateNum();
             }
-        },(long)rf,(long)updateIntervalInt*1000);
+        }, (long) rf, (long) updateIntervalInt * 1000);
     }
 
 }

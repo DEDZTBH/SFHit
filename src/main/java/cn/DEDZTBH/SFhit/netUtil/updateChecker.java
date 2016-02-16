@@ -1,36 +1,29 @@
 package cn.DEDZTBH.SFhit.netUtil;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.UnknownHostException;
 
 /**
  * Created by TonyLiu on 2016/2/2.
  */
 public class updateChecker {
 
-    getWebPage gwp = new getWebPage();
-
     public String getUpdate(String currentVer) throws IOException {
-        String content = gwp.getWebPage("https://github.com/DEDZTBH/SFHit/blob/master/README.md");
-        if (content.equals("-1")||content.equals("-2")){
+        String content = new getWebPage().getWebPage("https://coding.net/u/DE_DZ_TBH/p/SFHit/git/raw/master/README.md");
+        if (content.equals("-1") || content.equals("-2")) {
             return "-1";
-        }else{
-            String b = versionChanged(content,currentVer);
-            return b.equals("0") ?"0":b;
+        } else {
+            String b = versionChanged(content, currentVer);
+            return b.equals("0") ? "0" : b;
         }
     }
 
-    private String versionChanged(String content,String currentVer){
+    private String versionChanged(String content, String currentVer) {
         final String startTag = "version=={";
         final String endTag = "}";
 
         String newVer = content.substring(content.indexOf(startTag) + startTag.length(), content.indexOf(endTag));
         System.out.println(newVer);
-        return !newVer.equals(currentVer)?newVer:"0";
+        return !newVer.equals(currentVer) ? newVer : "0";
     }
 
 }

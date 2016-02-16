@@ -15,11 +15,10 @@ public class GetHit {
     private int booked;
     private int like;
     private String content;
-    getWebPage gwp = new getWebPage();
 
     public int GetHitNum(String bookNum) throws IOException {
         urlStr = "http://m.sfacg.com/b/" + bookNum;
-        content = gwp.getWebPage(urlStr);
+        content = new getWebPage().getWebPage(urlStr);
 
         if (content.equals("-1")) {
             ret = -1;
