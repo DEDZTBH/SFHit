@@ -8,14 +8,13 @@ import java.util.Date;
  * Created by peiqi on 2015/12/29.
  */
 public class HitUpdate {
-    FileManager fm = new FileManager();
+    private HitUpdate(){}
 
-    public String Update(int NewHit, int NewBooked, int NewLike, int BookNum) {
-        fm.ReadFile(BookNum);
-        int origHit = fm.getHit();
-        int origBooked = fm.getBooked();
-        int origLike = fm.getLike();
-//        System.out.println("org hit = " + origHit);
+    public static String Update(int NewHit, int NewBooked, int NewLike, int BookNum) {
+        FileManager.ReadFile(BookNum);
+        int origHit = FileManager.getHit();
+        int origBooked = FileManager.getBooked();
+        int origLike = FileManager.getLike();
         String UpdateInfo = "[" + getCurrentTime() + "]";
         int changeHit = NewHit - origHit;
         int changeBooked = NewBooked - origBooked;
@@ -31,15 +30,12 @@ public class HitUpdate {
         if (changeLike != 0) {
             build.append(" 喜欢" + (changeLike > 0 ? "+" : "") + changeLike);
         }
-//        System.out.println(build.toString());
-        fm = null;
         return build.toString().equals(UpdateInfo) ? null : build.toString();
     }
 
-    public String getCurrentTime() {
+    private static String getCurrentTime() {
         Date date = new Date();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String time = format.format(date);
-        return time;
+        return format.format(date);
     }
 }
