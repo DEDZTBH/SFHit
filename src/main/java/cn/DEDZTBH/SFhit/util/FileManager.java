@@ -7,25 +7,23 @@ import java.io.*;
  */
 public class FileManager {
 
-    private File recordFile;
-    private String record = "";
-    private String FileName;
-    private int hit;
-    private int booked;
-    private int like;
+    static private File recordFile;
+    static private String record = "";
+    static private int hit;
+    static private int booked;
+    static private int like;
 
+    private FileManager(){}
 
-    public void ReadFile(int BookNum) {
-        FileName = BookNum + ".txt";
-        recordFile = new File(FileName);
+    public static void ReadFile(int BookNum) {
+        String fileName = BookNum + ".txt";
+        recordFile = new File(fileName);
         record = "";
         hit = booked = like = 0;
         try {
             if (!recordFile.exists()) {
-//                    System.out.println("file dne");
                 recordFile.createNewFile();
             } else {
-//                    System.out.println("file exist, read record");
                 ReadBookRecorded();
             }
 
@@ -34,7 +32,7 @@ public class FileManager {
         }
     }
 
-    public void ReadBookRecorded() throws IOException {
+    private static void ReadBookRecorded() throws IOException {
         BufferedReader BR = new BufferedReader(new FileReader(recordFile));
         String line;
         StringBuilder build = new StringBuilder();
@@ -51,56 +49,47 @@ public class FileManager {
         String divided = Info;
         for (int i = 0; i < datas.length; i++) {
             divided = divided.substring(div + 1);
-//            System.out.println("divided="+divided);
             div = divided.indexOf(",");
-//            System.out.println("newDiv="+div);
             if (div < 0) {
                 datas[i] = divided;
             } else {
                 datas[i] = divided.substring(0, div);
             }
-//            System.out.println("i th ="+datas[i]);
         }
 
-        hit = intlz(datas[0]);
-//        System.out.println(datas[0]);
-        booked = intlz(datas[1]);
-        like = intlz(datas[2]);
+        hit = Integer.parseInt(datas[0]);
+        booked = Integer.parseInt(datas[1]);
+        like = Integer.parseInt(datas[2]);
         record = datas[3];
 
     }
 
-    public String getRecord() {
+    public static String getRecord() {
         return record;
     }
 
-    public int getHit() {
+    public static int getHit() {
         return hit;
     }
 
-    public void WriteFile(int BookNum, int Hit, int Booked, int Like, String Info) throws IOException {
+    public static void WriteFile(int BookNum, int Hit, int Booked, int Like, String Info) throws IOException {
         ReadFile(BookNum);
         String OrgRecord = record;
 
         if (Info != null) {
             FileWriter BW = new FileWriter(recordFile);
             BW.write(Hit + "," + Booked + "," + Like + "," + Info + "\n" + OrgRecord);
-//            System.out.println("write record");
             BW.flush();
             BW.close();
         }
 
     }
 
-    private int intlz(String s) {
-        return Integer.parseInt(s);
-    }
-
-    public int getBooked() {
+    public static int getBooked() {
         return booked;
     }
 
-    public int getLike() {
+    public static int getLike() {
         return like;
     }
 

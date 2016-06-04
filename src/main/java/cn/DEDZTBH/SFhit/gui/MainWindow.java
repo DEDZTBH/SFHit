@@ -49,9 +49,6 @@ public class MainWindow extends JFrame {
     public int updateIntervalInt = -1;
     public int bookNumber = -1;
 
-    PrefManager pm = new PrefManager();
-    FileManager fm = new FileManager();
-    HitUpdate hitUpdate = new HitUpdate();
     GetHit getHit = new GetHit();
     updateChecker uc = new updateChecker();
 
@@ -134,22 +131,6 @@ public class MainWindow extends JFrame {
             }
         });
 
-//        updateInterval.getDocument().addDocumentListener(new DocumentListener() {
-//            public void insertUpdate(DocumentEvent e) {
-//                changeInterval();
-//            }
-//
-//            public void removeUpdate(DocumentEvent e) {
-//                changeInterval();
-//            }
-//
-//            public void changedUpdate(DocumentEvent e) {
-//                changeInterval();
-//            }
-//
-//        });
-
-
         add(advert);
         advert.setSize(125, 25);
         advert.setLocation(525, 0);
@@ -157,10 +138,13 @@ public class MainWindow extends JFrame {
         advert.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 URI uri;
+                //noinspection Since15
                 Desktop dsktp = Desktop.getDesktop();
                 try {
                     uri = new URI("http://book.sfacg.com/Novel/43467/");
+                    //noinspection Since15
                     if (Desktop.isDesktopSupported() && dsktp.isSupported(Desktop.Action.BROWSE)) {
+                        //noinspection Since15
                         dsktp.browse(uri);
                     }
                 } catch (URISyntaxException e1) {
@@ -186,16 +170,16 @@ public class MainWindow extends JFrame {
 
         setVisible(true);
 
-        pm.readPref();
-        int prefNum = pm.getBookNum();
-        int prefUpdItv = pm.getUpdateIntv();
+        PrefManager.readPref();
+        int prefNum = PrefManager.getBookNum();
+        int prefUpdItv = PrefManager.getUpdateIntv();
         if (prefNum != -1) {
             bookNum.setText(String.valueOf(prefNum));
-            fm.ReadFile(prefNum);
-            displayNum.setText(String.valueOf(fm.getHit()));
-            recordText.setText(String.valueOf(fm.getRecord()));
-            booked.setText(String.valueOf(fm.getBooked()));
-            like.setText(String.valueOf(fm.getLike()));
+            FileManager.ReadFile(prefNum);
+            displayNum.setText(String.valueOf(FileManager.getHit()));
+            recordText.setText(String.valueOf(FileManager.getRecord()));
+            booked.setText(String.valueOf(FileManager.getBooked()));
+            like.setText(String.valueOf(FileManager.getLike()));
             bookNumber = prefNum;
         }
         if (prefUpdItv != -1) {
@@ -238,11 +222,12 @@ public class MainWindow extends JFrame {
                                 }
                             }
 
-
+//noinspection Since15
                             Desktop dsktp = Desktop.getDesktop();
                             try {
-
+//noinspection Since15
                                 if (Desktop.isDesktopSupported() && dsktp.isSupported(Desktop.Action.BROWSE)) {
+                                    //noinspection Since15
                                     dsktp.browse(uri);
                                 }
                             } catch (IOException e1) {
@@ -284,7 +269,7 @@ public class MainWindow extends JFrame {
                     status.setText("更新成功 = w =");
                     displayNum.setText(HitNum + "");
                     bookNameLabel.setText(BookName);
-                    String UpdateInfo = hitUpdate.Update(HitNum, getHit.getBooked(), getHit.getLike(), bookNumber);
+                    String UpdateInfo = HitUpdate.Update(HitNum, getHit.getBooked(), getHit.getLike(), bookNumber);
                     String statusInfo;
                     if (UpdateInfo == null) {
                         statusInfo = "更新成功 = w =";
@@ -296,11 +281,11 @@ public class MainWindow extends JFrame {
                         }
                     }
                     status.setText(statusInfo);
-                    fm.WriteFile(bookNumber, HitNum, getHit.getBooked(), getHit.getLike(), UpdateInfo);
-                    fm.ReadFile(bookNumber);
-                    recordText.setText(fm.getRecord());
-                    booked.setText(String.valueOf(fm.getBooked()));
-                    like.setText(String.valueOf(fm.getLike()));
+                    FileManager.WriteFile(bookNumber, HitNum, getHit.getBooked(), getHit.getLike(), UpdateInfo);
+                    FileManager.ReadFile(bookNumber);
+                    recordText.setText(FileManager.getRecord());
+                    booked.setText(String.valueOf(FileManager.getBooked()));
+                    like.setText(String.valueOf(FileManager.getLike()));
                 }
             }
         } catch (Exception ex) {
@@ -310,9 +295,9 @@ public class MainWindow extends JFrame {
     }
 
     public void updatePref(int BookNum, int updateIntervalInt) {
-        pm.readPref();
-        if ((BookNum != pm.getBookNum() && BookNum != -1) || (updateIntervalInt != pm.getUpdateIntv() && updateIntervalInt != -1)) {
-            pm.writePref(BookNum, updateIntervalInt);
+        PrefManager.readPref();
+        if ((BookNum != PrefManager.getBookNum() && BookNum != -1) || (updateIntervalInt != PrefManager.getUpdateIntv() && updateIntervalInt != -1)) {
+            PrefManager.writePref(BookNum, updateIntervalInt);
         }
     }
 

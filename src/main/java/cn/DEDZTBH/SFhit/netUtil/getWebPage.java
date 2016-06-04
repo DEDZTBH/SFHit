@@ -25,7 +25,7 @@ public class getWebPage {
             UnknownHosts = true;
             ret = "-1";
         }
-        if (UnknownHosts == false) {
+        if (!UnknownHosts) {
             if (Conn.getResponseCode() != 200) {
                 ret = "-2";
             } else {
