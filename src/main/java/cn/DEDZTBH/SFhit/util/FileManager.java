@@ -13,7 +13,8 @@ public class FileManager {
     static private int booked;
     static private int like;
 
-    private FileManager(){}
+    private FileManager() {
+    }
 
     public static void ReadFile(int BookNum) {
         String fileName = BookNum + ".txt";

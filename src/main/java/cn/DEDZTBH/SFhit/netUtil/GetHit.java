@@ -1,25 +1,20 @@
 package cn.DEDZTBH.SFhit.netUtil;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 
 /**
  * Created by peiqi on 2015/12/28.
  */
 public class GetHit {
-    private String urlStr;
-    public String BookName;
-    private HttpURLConnection Conn;
-    private boolean UnknownHosts = false;
-    private int ret;
-    private int booked;
-    private int like;
-    private String content;
+    private static String BookName;
+    private static int booked;
+    private static int like;
 
-    public int GetHitNum(String bookNum) throws IOException {
-        urlStr = "http://m.sfacg.com/b/" + bookNum;
-        content = new getWebPage().getWebPage(urlStr);
+    public static int GetHitNum(String bookNum) throws IOException {
+        String urlStr = "http://m.sfacg.com/b/" + bookNum;
+        String content = getWebPage.getAWebPage(urlStr);
 
+        int ret;
         if (content.equals("-1")) {
             ret = -1;
         } else {
@@ -41,7 +36,7 @@ public class GetHit {
     }
 
 
-    private String getBookName(String Content) {
+    private static String getBookName(String Content) {
         String StrTag = "<title>";
         int StartTag = Content.indexOf(StrTag) + StrTag.length();
         int EndTag = Content.indexOf("</title>");
@@ -55,7 +50,7 @@ public class GetHit {
         }
     }
 
-    private int getBookNum(String Content) {
+    private static int getBookNum(String Content) {
         String StrTag = "<span class=\"book_info3\">";
         int StartTag = Content.indexOf(StrTag) + StrTag.length();
         int EndTag = Content.indexOf("<br>");
@@ -70,12 +65,12 @@ public class GetHit {
         return Integer.parseInt(Content.substring(EndTag - Slash + 1, EndTag - 1));
     }
 
-    public String getBookName() {
+    public static String getBookName() {
         return BookName;
     }
 
 
-    private void getBookedAndLike(String content) {
+    private static void getBookedAndLike(String content) {
         int start = content.indexOf("<span class=\"icon-heart2\">");
         String cuttedContent = content.substring(start);
 
@@ -98,11 +93,11 @@ public class GetHit {
         like = result[1];
     }
 
-    public int getBooked() {
+    public static int getBooked() {
         return booked;
     }
 
-    public int getLike() {
+    public static int getLike() {
         return like;
     }
 }

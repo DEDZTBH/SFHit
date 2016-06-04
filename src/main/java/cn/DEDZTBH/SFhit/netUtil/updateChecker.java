@@ -7,8 +7,8 @@ import java.io.IOException;
  */
 public class updateChecker {
 
-    public String getUpdate(String currentVer) throws IOException {
-        String content = new getWebPage().getWebPage("https://coding.net/u/DE_DZ_TBH/p/SFHit/git/raw/master/README.md");
+    public static String getUpdate(String currentVer) throws IOException {
+        String content = getWebPage.getAWebPage("https://coding.net/u/DE_DZ_TBH/p/SFHit/git/raw/master/README.md");
         if (content.equals("-1") || content.equals("-2")) {
             return "-1";
         } else {
@@ -17,12 +17,12 @@ public class updateChecker {
         }
     }
 
-    private String versionChanged(String content, String currentVer) {
+    private static String versionChanged(String content, String currentVer) {
         final String startTag = "version=={";
         final String endTag = "}";
 
         String newVer = content.substring(content.indexOf(startTag) + startTag.length(), content.indexOf(endTag));
-        System.out.println(newVer);
+        //System.out.println(newVer);
         return !newVer.equals(currentVer) ? newVer : "0";
     }
 

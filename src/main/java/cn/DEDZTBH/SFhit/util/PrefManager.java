@@ -11,14 +11,15 @@ public class PrefManager {
     private static int updateIntv = -1;
     private static File f = new File("pref.txt");
 
-    private PrefManager() {}
+    private PrefManager() {
+    }
 
     public static void writePref(int bookNum, int updateInterval) {
         try {
             FileWriter fw = new FileWriter(f);
             String bookNumInfo = bookNum == -1 ? "" : String.valueOf(bookNum);
             String updateItvInfo = updateInterval == -1 ? "" : "," + String.valueOf(updateInterval);
-            System.out.println("write pref: " + bookNumInfo + updateItvInfo);
+            //System.out.println("write pref: " + bookNumInfo + updateItvInfo);
             fw.write(bookNumInfo + updateItvInfo);
             fw.flush();
             fw.close();

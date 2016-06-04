@@ -8,15 +8,15 @@ import java.net.URL;
 import java.net.UnknownHostException;
 
 /**
- * Created by TonyLiu on 2016/2/2.
+ * Created by DE_DZ_TBH on 2016/2/2.
  */
-public class getWebPage {
+class getWebPage {
 
-    private HttpURLConnection Conn;
-    private boolean UnknownHosts = false;
-    private String ret;
+    private static HttpURLConnection Conn;
+    private static boolean UnknownHosts = false;
+    private static String ret;
 
-    public String getWebPage(String urlStr) throws IOException {
+    static String getAWebPage(String urlStr) throws IOException {
         URL url = new URL(urlStr);
         try {
             Conn = (HttpURLConnection) url.openConnection();

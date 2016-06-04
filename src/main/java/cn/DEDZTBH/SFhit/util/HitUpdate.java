@@ -8,7 +8,8 @@ import java.util.Date;
  * Created by peiqi on 2015/12/29.
  */
 public class HitUpdate {
-    private HitUpdate(){}
+    private HitUpdate() {
+    }
 
     public static String Update(int NewHit, int NewBooked, int NewLike, int BookNum) {
         FileManager.ReadFile(BookNum);
