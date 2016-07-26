@@ -1,0 +1,7 @@
+1.如果你没装java先去装一个。
+中文网址：https://java.com/zh_CN/download/（有百度大礼包请注意!）
+英文网址：https://java.com/en/download/(没有大礼包)
+
+2.双击运行jar文件，无需安装。切记不要用压缩包软件打开，要用打开方式里的"Java(TM) Platform SE Binary"。
+
+3.如果没反应，请检查：你的电脑是否有足够的空闲内存？Java是否成功安装？实在不行联系我，我在丧心病狂群，qq1424567158
