@@ -32,7 +32,7 @@ public class MainWindow extends JFrame {
     private JLabel booked = new JLabel();
     private JLabel like = new JLabel();
 
-    private final String VERSION = "1.51";
+    private final String VERSION = "1.6";
 
     private int updateIntervalInt = -1;
     private int bookNumber = -1;
@@ -261,7 +261,8 @@ public class MainWindow extends JFrame {
                     status.setText("正在抓取信息，请稍后...");
                     int hitNum = GetHit.GetHitNum(bookNum.getText());
                     String bookName = GetHit.getBookName();
-                    //System.out.print(BookName);
+                    int bookedNum = GetHit.getBooked();
+                    int likeNum = GetHit.getLike();
                     if (hitNum == -1) {
                         status.setText("信息获取失败，请检查网络连接");
                     } else {
@@ -272,6 +273,8 @@ public class MainWindow extends JFrame {
                             updatePref(bookNumber, updateIntervalInt);
                             status.setText("更新成功 = w =");
                             displayNum.setText(hitNum + "");
+                            booked.setText(bookedNum + "");
+                            like.setText(likeNum + "");
                             bookNameLabel.setText(bookName);
                             String UpdateInfo = HitUpdate.Update(hitNum, GetHit.getBooked(), GetHit.getLike(), bookNumber);
                             String statusInfo;
