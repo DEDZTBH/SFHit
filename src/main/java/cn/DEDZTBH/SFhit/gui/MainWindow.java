@@ -214,7 +214,7 @@ public class MainWindow extends JFrame {
                                             uri = new URI("https://coding.net/u/DE_DZ_TBH/p/SFHit/git/tree/master/download");
                                         } catch (URISyntaxException e1) {
                                             e1.printStackTrace();
-                                        }
+                                       }
                                     }else if (opt == JOptionPane.NO_OPTION)
                                     {
                                         try {
