@@ -1,7 +1,8 @@
 ﻿1.如果你没装java先去装一个。
 https://java.com/zh_CN/download/manual.jsp
 (可能有百度大礼包，不想中枪又会英语的请点这里：https://java.com/en/download/manual.jsp)
-选择你的操作系统，windows要注意弄清楚系统是32位和64位并且选择(脱机)
+选择你的操作系统，windows要注意弄清楚系统是32位还是64位，并且选择(脱机)的。
+（我今天以一个长者的身份跟你们讲，Java以后会很有用的。）
 
 2.双击运行jar文件，无需安装。切记不要用压缩包软件打开，要用打开方式里的"Java(TM) Platform SE Binary"。
 
