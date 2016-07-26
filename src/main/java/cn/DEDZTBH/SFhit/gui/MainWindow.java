@@ -211,14 +211,14 @@ public class MainWindow extends JFrame {
                                     URI uri = null;
                                     if (opt == JOptionPane.YES_OPTION) {
                                         try {
-                                            uri = new URI("http://pan.baidu.com/s/1c0QuKLE");
+                                            uri = new URI("https://coding.net/u/DE_DZ_TBH/p/SFHit/git/tree/master/download");
                                         } catch (URISyntaxException e1) {
                                             e1.printStackTrace();
                                         }
                                     }else if (opt == JOptionPane.NO_OPTION)
                                     {
                                         try {
-                                            uri = new URI("https://drive.google.com/folderview?id=0B553ho8lC0IhUW5rTk9QajlrTXc&usp=sharing");
+                                            uri = new URI("https://github.com/DEDZTBH/SFHit/tree/master/download");
                                         } catch (URISyntaxException e1) {
                                             e1.printStackTrace();
                                         }

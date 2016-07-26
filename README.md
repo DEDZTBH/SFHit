@@ -32,8 +32,8 @@ psps Java可是世界第一大编程语言你们竟然不知道！你们不玩MC
 收藏和喜欢现已加入豪华午餐！
 
 下载地址：
-国内：http://pan.baidu.com/s/1c0QuKLE
-国外：https://drive.google.com/folderview?id=0B553ho8lC0IhUW5rTk9QajlrTXc&usp=sharing
+国内：https://coding.net/u/DE_DZ_TBH/p/SFHit/git/tree/master/download
+国外：https://github.com/DEDZTBH/SFHit/tree/master/download
 
 源代码：https://github.com/DEDZTBH/SFHit && https://coding.net/u/DE_DZ_TBH/p/SFHit/git
 开源万岁！
